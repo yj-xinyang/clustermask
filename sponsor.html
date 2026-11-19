@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>赞助方式 · 24-25星越L自定义仪表</title>
+<link rel="icon" href="assets/favicon.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: linear-gradient(180deg, #0f1419 0%, #121826 100%);
+    color: #dfe7f0; font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    min-height: 100vh;
+  }
+  a { color: #46a0c8; text-decoration: none; }
+  .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(15,20,25,0.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #1e2a3c;
+  }
+  nav .inner { max-width: 1060px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; }
+  nav img { width: 34px; height: 34px; border-radius: 9px; }
+  nav .name { font-size: 15px; font-weight: bold; margin-left: 11px; }
+  nav .links { margin-left: auto; display: flex; gap: 22px; font-size: 13.5px; }
+  nav .links a { color: #8aa3b8; }
+  nav .links a:hover { color: #46a0c8; }
+
+  .hero { text-align: center; padding: 56px 0 34px; }
+  .hero h1 { font-size: 30px; letter-spacing: 1px; }
+  .hero .sub { font-size: 14.5px; color: #8aa3b8; margin-top: 12px; line-height: 1.8; }
+  .divider { width: 56px; height: 3px; background: linear-gradient(90deg, #2d6a8f, #46a0c8); margin: 18px auto 0; border-radius: 2px; }
+
+  .cards {
+    max-width: 720px; margin: 34px auto 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  }
+  .card {
+    padding: 26px 22px;
+    background: #131b2a; border: 1px solid #22304a; border-radius: 18px;
+    text-align: center;
+  }
+  .card-t { font-size: 15px; font-weight: bold; color: #dfe7f0; margin-top: 14px; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+  .card img.qr {
+    width: 300px; max-width: 100%; border-radius: 14px;
+    background: #ffffff; padding: 12px;
+    box-shadow: 0 10px 34px rgba(0,0,0,0.45);
+  }
+  .card .qr-tip { font-size: 12.5px; color: #5c7a94; margin-top: 12px; }
+
+  .steps { max-width: 620px; margin: 34px auto 0; }
+  .step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: #131b2a; border: 1px solid #22304a; border-radius: 14px;
+    padding: 16px 18px; margin-top: 12px;
+  }
+  .step .no {
+    flex: 0 0 30px; width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(70,160,200,0.15); color: #46a0c8;
+    font-weight: bold; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step .tx { font-size: 14px; color: #b9c9d8; line-height: 1.75; }
+  .step .tx b { color: #dfe7f0; }
+
+  .thanks {
+    max-width: 620px; margin: 30px auto 0; padding: 20px 22px;
+    background: rgba(70,200,140,0.07); border: 1px solid rgba(70,200,140,0.25);
+    border-radius: 14px; font-size: 13.5px; color: #9fb8cc; line-height: 2;
+  }
+  .thanks b { color: #46c88c; }
+
+  .foot { text-align: center; padding: 46px 0 40px; font-size: 12.5px; color: #5c7a94; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <img src="assets/app-icon.png" alt="icon">
+    <div class="name">ClusterMask</div>
+    <div class="links">
+      <a href="index.html">首页</a>
+      <a href="disclaimer.html">免责声明</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>赞助方式</h1>
+    <div class="sub">这款仪表自定义工具由个人利用业余时间开发、调试与持续维护，软件制作不易。<br>赞助完全自愿、金额不限，量力而行即可——每一份支持都是后续持续更新的动力。</div>
+    <div class="divider"></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <img class="qr" src="assets/sponsor-qr.png" alt="赞助收款码">
+      <div class="card-t">赞助收款码</div>
+      <div class="qr-tip">扫码赞助 · 金额不限 · 量力而行</div>
+    </div>
+    <div class="card">
+      <img class="qr" src="assets/group-qr.jpg" alt="进群二维码">
+      <div class="card-t">进群二维码</div>
+      <div class="qr-tip">扫码进群 · 联系作者获取激活码</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="no">1</div>
+      <div class="tx"><b>扫码赞助</b> —— 使用微信/支付宝扫描赞助收款码，金额不限，量力而行。</div>
+    </div>
+    <div class="step">
+      <div class="no">2</div>
+      <div class="tx"><b>进群联系作者</b> —— 扫描进群二维码加入交流群，将赞助截图发给作者。</div>
+    </div>
+    <div class="step">
+      <div class="no">3</div>
+      <div class="tx"><b>获取激活码</b> —— 作者核验后为你签发激活码，一台设备一枚，激活后永久有效。</div>
+    </div>
+  </div>
+
+  <div class="thanks">
+    💚 <b>谢谢大家支持</b>——软件会持续更新、持续打磨。温馨提示：赞助金额随意，心意最重要，<b>请不要侮辱人</b> 🙏
+  </div>
+
+  <div class="foot">
+    <a href="index.html">返回首页</a> · <a href="disclaimer.html">免责声明</a><br><br>
+    使用前请务必阅读并同意免责声明 · 请勿将本软件用于商业用途
+  </div>
+
+</div>
+</body>
+</html>

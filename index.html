@@ -1,306 +1,228 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>易军 · Java 开发工程师</title>
-  <meta name="description" content="易军的个人信息页面，展示 Java 后端开发技能、项目经历与联系方式。">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>易</text></svg>">
-  <link rel="stylesheet" href="styles/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>24-25星越L自定义仪表 · ClusterMask</title>
+<link rel="icon" href="assets/favicon.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: linear-gradient(180deg, #0f1419 0%, #121826 100%);
+    color: #dfe7f0; font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    min-height: 100vh;
+  }
+  a { color: #46a0c8; text-decoration: none; }
+  .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== 导航 ===== */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(15,20,25,0.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #1e2a3c;
+  }
+  nav .inner { max-width: 1060px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; }
+  nav img { width: 34px; height: 34px; border-radius: 9px; }
+  nav .name { font-size: 15px; font-weight: bold; margin-left: 11px; }
+  nav .links { margin-left: auto; display: flex; gap: 22px; font-size: 13.5px; }
+  nav .links a { color: #8aa3b8; }
+  nav .links a:hover { color: #46a0c8; }
+
+  /* ===== Hero ===== */
+  .hero { text-align: center; padding: 76px 0 60px; }
+  .hero img.icon { width: 108px; height: 108px; border-radius: 26px; box-shadow: 0 12px 40px rgba(70,160,200,0.35); }
+  .hero h1 { font-size: 34px; letter-spacing: 1px; margin-top: 26px; }
+  .hero .sub { font-size: 15px; color: #8aa3b8; margin-top: 12px; }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 7px; margin-top: 16px;
+    padding: 6px 15px; border-radius: 20px; font-size: 13px;
+    background: rgba(70,200,140,0.1); color: #46c88c; border: 1px solid rgba(70,200,140,0.3);
+  }
+  .hero .cta { display: flex; gap: 14px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+  .cta .btn {
+    padding: 13px 34px; border-radius: 13px; font-size: 15px; font-weight: bold; cursor: pointer;
+    display: inline-block;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #2d6a8f 0%, #46a0c8 100%);
+    color: #fff; box-shadow: 0 6px 22px rgba(70,160,200,0.35);
+  }
+  .btn-ghost { background: #1a2334; color: #9fb8cc; border: 1px solid #26344a; }
+  .btn-disabled { opacity: 0.55; cursor: not-allowed; }
+  .hero .ver-note { font-size: 12px; color: #5c7a94; margin-top: 12px; }
+  .code-inline { font-family: monospace; color: #46c88c; font-weight: bold; letter-spacing: 2px; font-size: 14px; }
+
+  /* ===== 区块 ===== */
+  section { padding: 46px 0; }
+  section h2 { font-size: 24px; text-align: center; letter-spacing: 1px; }
+  section .sec-sub { text-align: center; font-size: 13.5px; color: #8aa3b8; margin-top: 10px; }
+  .divider { width: 56px; height: 3px; background: linear-gradient(90deg, #2d6a8f, #46a0c8); margin: 16px auto 0; border-radius: 2px; }
+
+  /* 功能卡片 */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 36px; }
+  .feature {
+    background: #161e2b; border: 1px solid #202c3e; border-radius: 16px; padding: 22px 20px;
+    transition: transform .2s, border-color .2s;
+  }
+  .feature:hover { transform: translateY(-4px); border-color: #2d4a68; }
+  .feature .fi { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
+  .feature .t { font-size: 16px; font-weight: bold; }
+  .feature .d { font-size: 12.5px; color: #8aa3b8; margin-top: 8px; line-height: 1.8; }
+
+  /* UI 预览 */
+  .preview { margin-top: 36px; }
+  .preview img { width: 100%; border-radius: 18px; border: 1px solid #202c3e; box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+  .preview .cap { text-align: center; font-size: 12.5px; color: #5c7a94; margin-top: 12px; }
+
+  /* 安全机制 */
+  .safety { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 36px; }
+  .safe-item { background: rgba(70,200,140,0.05); border: 1px solid rgba(70,200,140,0.2); border-radius: 14px; padding: 18px 20px; }
+  .safe-item .t { font-size: 14.5px; color: #46c88c; font-weight: bold; }
+  .safe-item .d { font-size: 12.5px; color: #8aa3b8; margin-top: 8px; line-height: 1.8; }
+
+  /* 免责声明 */
+  .disclaimer-box {
+    background: rgba(200,80,70,0.05); border: 1px solid rgba(200,80,70,0.25);
+    border-radius: 16px; padding: 26px; margin-top: 36px;
+  }
+  .disclaimer-box h3 { font-size: 16px; color: #d88a80; }
+  .disclaimer-box p { font-size: 13px; color: #9aa8b8; line-height: 2; margin-top: 12px; }
+  .disclaimer-box a { font-size: 13.5px; }
+
+  footer {
+    border-top: 1px solid #1e2a3c; margin-top: 50px; padding: 30px 0 40px;
+    text-align: center; font-size: 12.5px; color: #5c7a94; line-height: 2.2;
+  }
+  footer a { color: #8aa3b8; text-decoration: underline; }
+
+  @media (max-width: 760px) {
+    .features { grid-template-columns: 1fr; }
+    .safety { grid-template-columns: 1fr; }
+    nav .links { display: none; }
+  }
+</style>
 </head>
 <body>
-  <a href="#main" class="skip-link">跳转到主要内容</a>
 
-  <header class="site-header" id="siteHeader">
-    <div class="container header-inner">
-      <a href="#hero" class="logo">
-        <span class="logo-mark">YJ</span>
-        <span class="logo-text">易军<span class="logo-dot">.</span>dev</span>
-      </a>
+<nav>
+  <div class="inner">
+    <img src="assets/app-icon.png" alt="icon">
+    <div class="name">ClusterMask</div>
+    <div class="links">
+      <a href="#features">功能</a>
+      <a href="#preview">界面</a>
+      <a href="#safety">安全机制</a>
+      <a href="disclaimer.html">免责声明</a>
+    </div>
+  </div>
+</nav>
 
-      <nav id="mainNav" class="main-nav" aria-label="主导航">
-        <ul class="nav-list">
-          <li><a href="#about" class="nav-link">关于</a></li>
-          <li><a href="#skills" class="nav-link">技能</a></li>
-          <li><a href="#experience" class="nav-link">经历</a></li>
-          <li><a href="#projects" class="nav-link">项目</a></li>
-          <li><a href="#contact" class="nav-link">联系</a></li>
-        </ul>
-      </nav>
+<div class="container">
 
-      <div class="header-actions">
-        <button id="themeToggle" class="theme-toggle" aria-label="切换深浅主题" title="切换深浅主题">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="mainNav" aria-label="打开菜单">
-          <span></span><span></span><span></span>
-        </button>
+  <div class="hero">
+    <img class="icon" src="assets/app-icon.png" alt="app icon">
+    <h1>24-25星越L自定义仪表</h1>
+    <div class="sub">壁纸自定义 · 遮罩样式调整 · 卡片管理 —— 你的仪表，你做主</div>
+    <div class="badge">✓ 适用于 24-25 款星越L</div>
+    <div class="cta">
+      <a class="btn btn-ghost" href="sponsor.html">赞助方式</a>
+      <a class="btn btn-primary" href="https://1820446415.share.123pan.cn/123pan/ypFmjv-slBR3" target="_blank" rel="noopener">下载链接</a>
+      <a class="btn btn-ghost" href="disclaimer.html">免责声明</a>
+    </div>
+    <div class="ver-note">网盘提取码：<span class="code-inline">6666</span></div>
+  </div>
+
+  <section id="features">
+    <h2>功能一览</h2>
+    <div class="sec-sub">六大核心功能 + 四重安全保障</div>
+    <div class="divider"></div>
+    <div class="features">
+      <div class="feature">
+        <div class="fi" style="background:rgba(70,160,200,0.15)">🌗</div>
+        <div class="t">仪表遮罩三态</div>
+        <div class="d">原车遮罩 / 半遮挡 / 透明遮罩自由切换。半遮挡模式只遮挡角落区域，中央透出壁纸，并可消除挡位色块。</div>
+      </div>
+      <div class="feature">
+        <div class="fi" style="background:rgba(232,184,74,0.15)">🧭</div>
+        <div class="t">导航卡片隐藏</div>
+        <div class="d">一键隐藏仪表导航卡片，投屏导航时视野最大化。音乐卡片、HUD、音量、告警均不受影响。</div>
+      </div>
+      <div class="feature">
+        <div class="fi" style="background:rgba(120,190,160,0.15)">🖼</div>
+        <div class="t">自定义壁纸 · 原图直出</div>
+        <div class="d">深色 / 浅色模式独立设置壁纸。相册直接选图，按仪表比例裁切后无损写入，不压缩画质、细节零损失，所见即所得。</div>
+      </div>
+      <div class="feature">
+        <div class="fi" style="background:rgba(160,120,200,0.15)">⚡</div>
+        <div class="t">毫秒级即时切换</div>
+        <div class="d">六组壁纸编号一键切换，无需重启仪表，毫秒级生效。默认图案与自定义内容随时往返。</div>
+      </div>
+      <div class="feature">
+        <div class="fi" style="background:rgba(200,110,100,0.15)">↩️</div>
+        <div class="t">一键恢复原车</div>
+        <div class="d">所有修改一键还原：壁纸、遮罩、卡片全部恢复出厂状态，OTA 升级前必用。</div>
+      </div>
+      <div class="feature">
+        <div class="fi" style="background:rgba(90,160,210,0.15)">✓</div>
+        <div class="t">车型智能验证</div>
+        <div class="d">自动识别车机型号，仅 24-25 款星越L 车机可用，防止误装误用。</div>
       </div>
     </div>
-  </header>
+  </section>
 
-  <main id="main">
-    <!-- Hero -->
-    <section class="hero" id="hero">
-      <div class="hero-bg" aria-hidden="true">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="hero-grid"></div>
-      </div>
-
-      <div class="container hero-inner">
-        <div class="hero-content">
-          <p class="hero-greeting reveal">你好，我是</p>
-          <h1 class="hero-name reveal">易军</h1>
-          <p class="hero-role reveal"><span id="typedText"></span><span class="cursor">|</span></p>
-
-          <ul class="hero-meta reveal">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>男 · 27 岁</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>上海</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>本科 · 计算机科学与技术</li>
-          </ul>
-
-          <div class="hero-status reveal">
-            <span class="status-dot"></span>离职 · 可立即上岗
-          </div>
-
-          <div class="hero-actions reveal">
-            <a href="#projects" class="btn btn-primary">查看项目</a>
-            <a href="#contact" class="btn btn-ghost">联系我</a>
-          </div>
-
-          <dl class="hero-stats reveal">
-            <div class="stat"><dt>项目经验</dt><dd>3<span>个</span></dd></div>
-            <div class="stat"><dt>开发经验</dt><dd>2<span>年+</span></dd></div>
-            <div class="stat"><dt>技术栈</dt><dd>10<span>+</span></dd></div>
-          </dl>
-        </div>
-      </div>
-
-      <a href="#about" class="scroll-hint" aria-label="向下滚动">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m7-7-7 7-7-7"/></svg>
-      </a>
-    </section>
-
-    <!-- About -->
-    <section class="section" id="about">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-kicker">About</span>
-          <h2 class="section-title">关于我</h2>
-        </div>
-        <div class="about-grid">
-          <article class="card about-card reveal">
-            <p>Java 开发工程师，具备扎实的 Java 基础与面向对象思维，熟悉 JVM 内存模型、常用垃圾回收算法与主流开源框架的整合开发。</p>
-            <p>参与过多个完整的后端项目，覆盖 B2B 供应链平台、健康管理业务系统与物联网监控系统，熟悉 Spring Boot、Spring Cloud、Dubbo 等微服务架构，具备权限控制、高并发数据处理等实战经验。</p>
-            <p>做事严谨、思路清晰，擅长在团队中沟通协作，能独立分析并解决问题，乐于钻研新技术并快速落地。</p>
-          </article>
-          <aside class="card about-side reveal">
-            <h3>基本信息</h3>
-            <ul class="info-list">
-              <li><span>姓名</span><strong>易军</strong></li>
-              <li><span>意向岗位</span><strong>Java 开发工程师</strong></li>
-              <li><span>工作年限</span><strong>2 年+</strong></li>
-              <li><span>城市</span><strong>上海</strong></li>
-              <li><span>学历</span><strong>本科 · 计算机科学与技术</strong></li>
-              <li><span>状态</span><strong class="highlight">离职可立即上岗</strong></li>
-            </ul>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="section section-alt" id="skills">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-kicker">Skills</span>
-          <h2 class="section-title">专业技能</h2>
-        </div>
-        <div class="skills-grid">
-          <article class="card skill-card reveal">
-            <div class="skill-icon icon-lang">☕</div>
-            <h3>语言与基础</h3>
-            <p>Java 基础扎实，熟悉 OOP 思想、集合框架、IO、多线程与常用设计模式。</p>
-            <div class="tags"><span>Java</span><span>OOP</span><span>多线程</span><span>JVM</span><span>设计模式</span></div>
-          </article>
-          <article class="card skill-card reveal">
-            <div class="skill-icon icon-frame">🌱</div>
-            <h3>后端框架</h3>
-            <p>精通 Spring 全家桶与 MyBatis 整合开发，深入理解 Spring Boot 自动装配原理。</p>
-            <div class="tags"><span>Spring</span><span>Spring MVC</span><span>Spring Boot</span><span>MyBatis</span><span>Spring Security</span></div>
-          </article>
-          <article class="card skill-card reveal">
-            <div class="skill-icon icon-cloud">☁️</div>
-            <h3>微服务</h3>
-            <p>熟悉 Spring Cloud、Dubbo 微服务治理架构，参与过微服务项目开发。</p>
-            <div class="tags"><span>Spring Cloud</span><span>Dubbo</span><span>Zookeeper</span><span>RabbitMQ</span></div>
-          </article>
-          <article class="card skill-card reveal">
-            <div class="skill-icon icon-db">🗄️</div>
-            <h3>数据与中间件</h3>
-            <p>精通 MySQL 与 Redis，了解 Elasticsearch、Solr 全文检索与 IK 分词。</p>
-            <div class="tags"><span>MySQL</span><span>Redis</span><span>Elasticsearch</span><span>Solr</span></div>
-          </article>
-          <article class="card skill-card reveal">
-            <div class="skill-icon icon-ops">🐧</div>
-            <h3>运维与工具</h3>
-            <p>熟练操作 Linux、Docker、Nginx、Tomcat，熟练使用主流开发与测试工具。</p>
-            <div class="tags"><span>Linux</span><span>Docker</span><span>Nginx</span><span>Git</span><span>Maven</span><span>JMeter</span></div>
-          </article>
-          <article class="card skill-card reveal">
-            <div class="skill-icon icon-web">🎨</div>
-            <h3>前端技术</h3>
-            <p>熟悉 HTML、CSS、JavaScript，了解 Vue 与 Bootstrap，可独立完成前后端联调。</p>
-            <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Vue</span><span>Bootstrap</span></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section class="section" id="experience">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-kicker">Experience</span>
-          <h2 class="section-title">工作经历</h2>
-        </div>
-        <div class="timeline">
-          <article class="card timeline-card reveal">
-            <div class="timeline-marker" aria-hidden="true"></div>
-            <header class="timeline-head">
-              <div>
-                <h3>Java 开发工程师</h3>
-                <p class="timeline-company">郑州优万网络科技有限公司</p>
-              </div>
-              <span class="timeline-date">2019.11 — 2021.12</span>
-            </header>
-            <ul class="timeline-list">
-              <li>负责部分业务需求分析、业务数据建模与系统设计。</li>
-              <li>负责所分配功能模块的详细设计、功能开发、单元测试与代码优化。</li>
-              <li>遵循开发管理流程，编写和完善设计文档与操作手册。</li>
-              <li>结合项目需求，提出合理化建议，持续改进系统质量。</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section class="section section-alt" id="projects">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-kicker">Projects</span>
-          <h2 class="section-title">项目经历</h2>
-        </div>
-        <div class="projects-list">
-          <article class="card project-card reveal">
-            <div class="project-index">01</div>
-            <div class="project-body">
-              <header class="project-head">
-                <h3>万合服装贸易供应链平台</h3>
-                <div class="project-meta"><span class="badge">后端开发</span><span class="project-date">2021.04 — 2021.12</span></div>
-              </header>
-              <p class="project-desc">面向服装商家的 B2B 分布式交易平台，由供应链管理后台、商户端、供应商端组成，为服装厂家和零售点提供商城平台、物流服务、商品监管、订单对接、运营服务等一站式服务。</p>
-              <ul class="project-points">
-                <li>负责供应链管理后台的商户管理模块，以及权限管理、角色管理模块。</li>
-                <li>基于 SpringSecurity 完成机构与员工的权限控制。</li>
-                <li>使用 Redis 实现购物车与订单创建，MySQL 锁实现减库存。</li>
-                <li>完成数据库表结构设计与搭建，优化查询效率与并发度。</li>
-              </ul>
-              <div class="tags"><span>Spring Boot</span><span>Spring Cloud</span><span>Spring Security</span><span>MyBatis-Plus</span><span>MySQL</span><span>Redis</span><span>RabbitMQ</span><span>ES</span></div>
-            </div>
-          </article>
-
-          <article class="card project-card reveal">
-            <div class="project-index">02</div>
-            <div class="project-body">
-              <header class="project-head">
-                <h3>智慧健康云管理平台</h3>
-                <div class="project-meta"><span class="badge">后端开发</span><span class="project-date">2020.06 — 2021.03</span></div>
-              </header>
-              <p class="project-desc">面向健康管理机构的业务系统，实现工作内容可视化、会员管理专业化、健康评估数字化、健康干预流程化，提升健康管理师工作效率与机构运营洞察力。</p>
-              <ul class="project-points">
-                <li>负责系统管理模块：菜单设置、角色管理、权限管理、用户管理。</li>
-                <li>设计并搭建用户、权限、角色、菜单五表及中间关系结构。</li>
-                <li>整合 SpringSecurity，完善登录、退出、权限控制与权限校验。</li>
-                <li>使用 MyBatis 完成各管理模块增删改查功能，编写接口文档与操作手册。</li>
-              </ul>
-              <div class="tags"><span>Spring Boot</span><span>Dubbo</span><span>Zookeeper</span><span>MyBatis</span><span>MySQL</span><span>Spring Security</span><span>Vue</span></div>
-            </div>
-          </article>
-
-          <article class="card project-card reveal">
-            <div class="project-index">03</div>
-            <div class="project-body">
-              <header class="project-head">
-                <h3>数据化实验室监控系统</h3>
-                <div class="project-meta"><span class="badge">后端开发</span><span class="project-date">2019.11 — 2020.05</span></div>
-              </header>
-              <p class="project-desc">面向高校实验室管理的可视化物联网系统，支持设备查询、在线预约、教室分配，实时监控实验室设施运行与维护情况，提升实验室综合使用效率。</p>
-              <ul class="project-points">
-                <li>负责实验室设备管理模块与用户管理模块的开发。</li>
-                <li>负责数据库设计与核心表关系搭建，选择合适的数据库引擎。</li>
-                <li>使用 Bootstrap 设计前端页面风格，搭建软件整体架构。</li>
-                <li>编写需求分析、设计文档与操作手册等完整项目文档。</li>
-              </ul>
-              <div class="tags"><span>Spring</span><span>Spring MVC</span><span>MyBatis</span><span>MySQL</span><span>Ajax</span><span>jQuery</span><span>Bootstrap</span></div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Strengths -->
-    <section class="section" id="strengths">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-kicker">Strengths</span>
-          <h2 class="section-title">个人优势</h2>
-        </div>
-        <div class="strengths-grid">
-          <div class="card strength reveal"><div class="strength-icon">🧠</div><h3>逻辑思维强</h3><p>思路清晰，自学能力极强，对新技术有强烈的好奇心。</p></div>
-          <div class="card strength reveal"><div class="strength-icon">🛡️</div><h3>抗压能力好</h3><p>具备独立解决问题的能力，能从容应对开发中的挑战。</p></div>
-          <div class="card strength reveal"><div class="strength-icon">🤝</div><h3>沟通协作</h3><p>性格开朗，擅长团队合作，与同事沟通顺畅高效。</p></div>
-          <div class="card strength reveal"><div class="strength-icon">🚀</div><h3>总结上进</h3><p>善于总结复盘，持续学习，保持强烈的上进心。</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="section contact-section" id="contact">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-kicker">Contact</span>
-          <h2 class="section-title">联系我</h2>
-        </div>
-        <div class="contact-grid">
-          <a href="tel:17630915020" class="card contact-card reveal">
-            <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-            <div><h3>电话</h3><p>176-3091-5020</p></div>
-          </a>
-          <a href="mailto:17630915020@163.com" class="card contact-card reveal">
-            <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></div>
-            <div><h3>邮箱</h3><p>17630915020@163.com</p></div>
-          </a>
-          <div class="card contact-card contact-note reveal">
-            <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-            <div><h3>到岗状态</h3><p>离职 · 可立即上岗</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2026 易军 · Java 开发工程师</p>
-      <p class="footer-sub">基于个人简历生成 · 用心打磨每一个页面</p>
+  <section id="preview">
+    <h2>界面预览</h2>
+    <div class="sec-sub">深色 / 浅色双主题 · 三种主题模式自由切换（深色 / 浅色 / 跟随系统）</div>
+    <div class="divider"></div>
+    <div class="preview">
+      <img src="assets/ui-preview.png" alt="App 界面预览">
+      <div class="cap">主界面：悬浮操作栏 · 状态一览卡 · 卡片式设置分区</div>
     </div>
+  </section>
+
+  <section id="safety">
+    <h2>安全机制</h2>
+    <div class="sec-sub">所有修改均带有完整的安全链路</div>
+    <div class="divider"></div>
+    <div class="safety">
+      <div class="safe-item">
+        <div class="t">✓ 部署前自动备份</div>
+        <div class="d">每次修改车机文件前自动备份当前版本到独立位置，cksum 校验确认后才开始写入。</div>
+      </div>
+      <div class="safe-item">
+        <div class="t">✓ 写入完整性校验</div>
+        <div class="d">部署后立即复核文件校验和，不一致自动还原，绝不把损坏文件留在车机上。</div>
+      </div>
+      <div class="safe-item">
+        <div class="t">✓ 一键原车还原</div>
+        <div class="d">内置全套原厂文件副本，任何时候一键恢复出厂状态，全程约 5 秒。</div>
+      </div>
+      <div class="safe-item">
+        <div class="t">✓ 资源防呆校验</div>
+        <div class="d">内置资源按唯一特征定位，车机系统版本不匹配时自动拒绝部署，防止误操作。</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="disclaimer">
+    <h2>免责声明</h2>
+    <div class="sec-sub">使用前请务必阅读并理解</div>
+    <div class="divider"></div>
+    <div class="disclaimer-box">
+      <h3>⚠ 请务必知悉</h3>
+      <p>本软件为非官方仪表自定义工具，会修改车辆仪表系统的原厂文件。尽管内置备份与回滚机制，仍存在因文件修改导致仪表显示异常（包括黑屏、花屏、显示错乱）的可能性；修改原厂文件可能导致车辆失去厂家保修；请在 OTA 升级前务必先恢复原车。</p>
+      <p>使用者点击软件内"同意并继续"即视为已阅读、理解并接受全部风险条款。驾驶时请勿操作本软件。</p>
+      <p style="margin-top:16px">👉 <a href="disclaimer.html"><b>点击查看完整免责声明与使用协议</b></a></p>
+    </div>
+  </section>
+
+  <footer>
+    <div>24-25星越L自定义仪表 · ClusterMask</div>
+    <div>仅供个人学习研究使用 · 请遵守<a href="disclaimer.html">免责声明与使用协议</a></div>
+    <div>© 2025 · 适用车型：24-25 款星越L</div>
   </footer>
 
-  <script src="scripts/main.js"></script>
+</div>
 </body>
 </html>
