@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>24-25星越L自定义仪表 · 界面预览</title>
+<style>
+  :root{
+    /* ===== 深色主题（=App AppThemeDark，themes.xml 实值） ===== */
+    --bgTop:#121826; --bg:#121826; --panel:#161e2b; --panel2:#101825;
+    --line:#202c3e; --line2:#26344a; --tx:#dfe7f0; --tx2:#5c7a94; --tx3:#6d8aa5;
+    --hover:#1c2736; --primary:#46a0c8; --primaryDark:#2d6a8f; --accent:#e8b84a;
+    --ok:#46c88c; --danger:#d88a80; --dangerPanel:#2a1a18; --dangerLine:#4a2a28;
+    --sel:rgba(70,160,200,.14);
+    /* 按钮实色（btn_primary_bg 渐变两端） */
+    --btnPrimaryA:#2d6a8f; --btnPrimaryB:#46a0c8;
+    --appIconA:#1e2840; --appIconB:#46a0c8;
+  }
+  body.light{
+    /* ===== 浅色主题（=App AppThemeLight，themes.xml 实值） ===== */
+    --bgTop:#f4f7fb; --bg:#eef3f8; --panel:#ffffff; --panel2:#f2f6fa;
+    --line:#dde6ef; --line2:#ccd9e6; --tx:#233242; --tx2:#7a93aa; --tx3:#8fa6ba;
+    --hover:#eef3f9; --primary:#2d6a8f; --primaryDark:#225270; --accent:#b8860b;
+    --ok:#1e9a68; --danger:#c05a50; --dangerPanel:#f7eded; --dangerLine:#e8c8c5;
+    --sel:rgba(45,106,143,.14);
+    --btnPrimaryA:#2d6a8f; --btnPrimaryB:#46a0c8;
+    --appIconA:#d8e6f2; --appIconB:#7ab0d0;
+  }
+  body { margin:0; background:#0b0e14; color:var(--tx); font-family:"Microsoft YaHei",sans-serif; }
+  .phone { max-width:1100px; margin:0 auto; padding:14px; }
+  /* 字号换算：1sp = 0.72px（分区标题 25sp=18px 基准），相对比例与 App 布局一致 */
+  .app { background:var(--bg); border-radius:10px; overflow:hidden; border:1px solid var(--line); }
+
+  /* ===== 悬浮顶区（stickyTop） ===== */
+  .top { background:var(--bgTop); padding:14px 14px 12px; border-bottom:1px solid var(--line); }
+  .toprow { display:flex; align-items:center; }
+  .appicon { width:36px; height:36px; border-radius:9px; background:linear-gradient(135deg,var(--appIconA),var(--appIconB)); display:flex; align-items:center; justify-content:center; font-size:24px; margin-right:10px; }
+  .titles { flex:1; }
+  .title { font-size:20px; font-weight:bold; color:var(--tx); letter-spacing:.03em; }
+  .subtitle { font-size:16px; color:var(--tx2); margin-top:2px; }
+  .themeBtn { width:30px; height:30px; border-radius:8px; background:var(--panel2); border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; margin-right:8px; }
+  .conn { font-size:16px; padding:4px 9px; border-radius:6px; background:var(--panel2); color:var(--accent); }
+  .conn.ok { color:var(--ok); }
+  .mainBtns { display:flex; gap:6px; margin-top:12px; }
+  .mbtn { flex:1; padding:11px 0; border-radius:8px; font-size:18px; font-weight:bold; text-align:center; cursor:pointer; border:1px solid var(--line2); background:var(--panel); color:var(--tx2); }
+  .mbtn.primary { background:linear-gradient(180deg,var(--btnPrimaryA),var(--btnPrimaryB)); border-color:var(--btnPrimaryB); color:#fff; }
+  .mbtn.danger { background:var(--dangerPanel); border-color:var(--dangerLine); color:var(--danger); }
+
+  /* ===== 滚动区 ===== */
+  .scroll { padding:6px 14px 18px; }
+
+  /* 状态带 */
+  .status { display:flex; gap:5px; margin-top:6px; }
+  .scard { flex:1; background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:9px 10px; }
+  .scard .k { font-size:16px; color:var(--tx2); }
+  .scard .v { font-size:18px; font-weight:bold; margin-top:4px; color:var(--primary); }
+  .scard .v.acc { color:var(--accent); }
+  .scard .v.tx { color:var(--tx); }
+  .scard .v.ok { color:var(--ok); }
+
+  /* 分区标题 */
+  .sect { font-size:18px; color:var(--tx3); letter-spacing:.08em; margin:14px 4px 8px; }
+  /* panel 卡 */
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:11px; }
+
+  /* 壁纸槽卡 */
+  .slots { display:flex; gap:10px; }
+  .slot { flex:1; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px; }
+  .slot .thumb { width:100%; border-radius:6px; border:1px solid var(--line); display:block; aspect-ratio:8/3; object-fit:cover; background:var(--panel2); }
+  .slot .lab { font-size:16px; color:var(--tx2); margin-top:7px; }
+  .slot .st { font-size:16px; color:#7a93aa; margin:3px 0 7px; }
+  .sbtn { display:inline-block; padding:5px 12px; border-radius:6px; font-size:14px; border:1px solid var(--line2); background:var(--panel2); color:var(--tx2); cursor:pointer; }
+  .sbtn.hl { background:var(--sel); border-color:var(--primary); color:var(--primary); }
+  .slotInfo { font-size:16px; color:var(--tx2); margin-top:8px; }
+  .slotBtns { display:flex; gap:8px; margin-top:8px; }
+  .slotBtns .sbtn { flex:1; text-align:center; padding:8px 0; }
+
+  /* 壁纸即时切换 */
+  .quick { display:flex; gap:4px; }
+  .qbtn { flex:1; padding:9px 0; border-radius:6px; font-size:18px; text-align:center; border:1px solid var(--line2); background:var(--panel2); color:var(--tx2); cursor:pointer; margin:4px; }
+  .wpstate { font-size:16px; color:var(--tx2); margin-top:9px; }
+
+  /* 仪表卡片双开关（Android Switch 风格） */
+  .swrow { display:flex; align-items:center; padding:7px 5px; cursor:pointer; }
+  .swrow .lab { flex:1; }
+  .swrow .lab .t { font-size:18px; color:var(--tx); }
+  .swrow .lab .s { font-size:16px; color:var(--tx2); margin-top:2px; line-height:1.5; }
+  .tgl { width:48px; height:28px; border-radius:14px; background:var(--line2); position:relative; flex-shrink:0; transition:background .2s; }
+  .tgl::after { content:''; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#8fa3bd; transition:all .2s; }
+  body.light .tgl::after { background:#fff; }
+  .swrow.on .tgl { background:var(--primary); }
+  .swrow.on .tgl::after { left:23px; background:#fff; }
+
+  /* 遮罩选项（RadioButton + 描述行） */
+  .opt { padding:8px 10px; border-radius:6px; color:var(--tx); font-size:18px; cursor:pointer; border:1px solid transparent; background:transparent; }
+  .opt.sel { background:var(--sel); border-color:var(--primary); }
+  .opt .dot { display:inline-block; width:13px; height:13px; border-radius:50%; border:2px solid var(--tx2); margin-right:9px; vertical-align:-1px; }
+  .opt.sel .dot { border-color:var(--primary); background:var(--primary); box-shadow:inset 0 0 0 2.5px var(--panel); }
+  .opt .sub { font-size:16px; color:var(--tx2); margin-top:2px; padding-left:24px; }
+  .opt.sel .sub { color:var(--primary); }
+
+  /* 自定义参数面板 */
+  .sidebtns { display:flex; gap:5px; margin-bottom:8px; }
+  .sidebtn { flex:1; padding:9px 0; text-align:center; font-size:17px; border-radius:6px; cursor:pointer; background:var(--panel); border:1px solid var(--line2); color:var(--tx2); }
+  .sidebtn.sel { background:var(--sel); border-color:var(--primary); color:var(--tx); }
+  .pv { border:1px solid var(--line); border-radius:6px; overflow:hidden; margin-bottom:10px; }
+  canvas { display:block; width:100%; height:auto; }
+  .cols { display:flex; gap:9px; }
+  .col { flex:1; }
+  .col h4 { margin:0 0 4px; font-size:11px; color:var(--tx2); font-weight:normal; }
+  .prow { display:flex; align-items:center; margin:6px 0; }
+  .prow label { width:66px; font-size:12px; color:var(--tx2); flex-shrink:0; }
+  .prow input[type=range] { flex:1; accent-color:var(--primary); }
+  .prow .val { width:40px; text-align:right; color:var(--tx); font-family:Consolas,monospace; font-size:12px; flex-shrink:0; }
+  .cmBtns { display:flex; gap:5px; margin-top:9px; }
+  .cmBtns .mbtn { font-weight:normal; }
+  .cmBtns .mbtn.main { font-weight:bold; }
+
+  /* 日志 */
+  .log { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:10px; font-family:Consolas,monospace; font-size:15px; color:var(--tx2); line-height:1.55; min-height:110px; white-space:pre-wrap; }
+  .log .l-ok { color:var(--ok); }
+  .log .l-warn { color:var(--accent); }
+
+  /* Toast 演示 */
+  #toast { position:fixed; left:50%; bottom:48px; transform:translateX(-50%); background:rgba(40,50,70,.95); color:#e8eef7; padding:10px 22px; border-radius:22px; font-size:15px; opacity:0; transition:opacity .25s; pointer-events:none; border:1px solid var(--line2); }
+  #toast.show { opacity:1; }
+
+  .note { font-size:13px; color:#6b7f99; line-height:1.7; margin-top:12px; }
+  .note b { color:#9fc3e8; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="app" id="app">
+
+    <!-- ===== 悬浮顶区：图标+标题+主题+连接状态，下方应用/恢复双按钮（滚动时固定） ===== -->
+    <div class="top">
+      <div class="toprow">
+        <div class="appicon">🛠</div>
+        <div class="titles">
+          <div class="title">24-25星越L自定义仪表</div>
+          <div class="subtitle">适用 24-25 款星越L</div>
+        </div>
+        <div class="themeBtn" onclick="toggleTheme()" title="深色→浅色→跟随系统循环">🌗</div>
+        <div class="conn" id="conn">● 连接中</div>
+      </div>
+      <div class="mainBtns">
+        <div class="mbtn primary" onclick="applyChanges()">应用更改</div>
+        <div class="mbtn danger" onclick="restoreAll()">恢复原车</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+
+      <!-- 状态带：遮罩状态 / 音乐卡片 / 导航卡片 / 壁纸编号 -->
+      <div class="status">
+        <div class="scard"><div class="k">遮罩状态</div><div class="v" id="stMask">原车遮罩</div></div>
+        <div class="scard"><div class="k">音乐卡片</div><div class="v acc" id="stMusic">显示中</div></div>
+        <div class="scard"><div class="k">导航卡片</div><div class="v acc" id="stNavi">显示中</div></div>
+        <div class="scard"><div class="k">壁纸编号</div><div class="v tx" id="stWp">5 · 自定义</div></div>
+      </div>
+
+      <!-- 自定义壁纸（5 号槽 · 深浅独立）：双槽卡 + 三按钮 -->
+      <div class="sect">自定义壁纸（5 号槽 · 深浅独立）</div>
+      <div class="panel">
+        <div class="slots">
+          <div class="slot">
+            <img class="thumb" src="png00_dark_wall.png" alt="深色壁纸槽">
+            <div class="lab">🌙 深色壁纸</div>
+            <div class="st" id="slotD">未设置</div>
+            <span class="sbtn hl">选图</span>
+          </div>
+          <div class="slot">
+            <img class="thumb" src="png06_light_wall.png" alt="浅色壁纸槽">
+            <div class="lab">☀️ 浅色壁纸</div>
+            <div class="st" id="slotL">未设置</div>
+            <span class="sbtn hl">选图</span>
+          </div>
+        </div>
+        <div class="slotInfo" id="slotInfo"> · 未选图</div>
+        <div class="slotBtns">
+          <span class="sbtn hl">相册选图</span>
+          <span class="sbtn">清除深色</span>
+          <span class="sbtn">清除浅色</span>
+        </div>
+      </div>
+
+      <!-- 壁纸即时切换 -->
+      <div class="sect">壁纸即时切换（毫秒生效 · 免重启）</div>
+      <div class="panel">
+        <div class="quick">
+          <div class="qbtn">1</div><div class="qbtn">2</div><div class="qbtn">3</div>
+          <div class="qbtn">4</div><div class="qbtn">5</div><div class="qbtn">6</div>
+        </div>
+        <div class="wpstate" id="wpState">当前壁纸编号：5（5 · 自定义）</div>
+      </div>
+
+      <!-- 仪表卡片：双开关（音乐在上，导航在下；均可独立设置，默认关） -->
+      <div class="sect">仪表卡片</div>
+      <div class="panel">
+        <div class="swrow" id="swMusic" onclick="tgMusic()">
+          <div class="lab">
+            <div class="t">🎵 隐藏音乐卡片</div>
+            <div class="s">音源图标/歌名/歌手/进度条/封面 全隐藏 · 空闲与播放均空白 · 中控播放不受影响</div>
+          </div>
+          <div class="tgl"></div>
+        </div>
+        <div class="swrow" id="swNavi" onclick="tgNavi()">
+          <div class="lab">
+            <div class="t">🧭 隐藏导航卡片</div>
+            <div class="s">背景/转向小图/路名/距离/时间/ETA 全隐藏 · 投屏导航更清爽 · 切换黑屏 5 秒</div>
+          </div>
+          <div class="tgl"></div>
+        </div>
+      </div>
+
+      <!-- 仪表遮罩：四选项（原车默认），描述行可点=选中 -->
+      <div class="sect">仪表遮罩</div>
+      <div class="panel">
+        <div class="opt sel" id="opt0" onclick="selMask(0)">
+          <span class="dot"></span>🚙 原车遮罩
+          <div class="sub">原车深浅渐变背景，完整原车体验</div>
+        </div>
+        <div class="opt" id="opt1" onclick="selMask(1)">
+          <span class="dot"></span>🌓 半遮挡
+          <div class="sub">只遮挡角落区域，中央透出壁纸，可消除挡位色块</div>
+        </div>
+        <div class="opt" id="opt2" onclick="selMask(2)">
+          <span class="dot"></span>💎 透明遮罩
+          <div class="sub">全屏壁纸沉浸显示</div>
+        </div>
+        <div class="opt" id="opt3" onclick="selMask(3)">
+          <span class="dot"></span>🎨 自定义遮挡
+          <div class="sub">自己调遮挡形状和浓度，下方展开参数（选中展开）</div>
+        </div>
+      </div>
+
+      <!-- 自定义遮挡参数面板（选中"自定义遮挡"时展开；默认隐藏） -->
+      <div class="panel" id="customPanel" style="display:none; margin-top:8px;">
+        <div class="sidebtns">
+          <div class="sidebtn sel" id="cmLight" onclick="setSide('light')">☀️ 浅色遮罩</div>
+          <div class="sidebtn" id="cmDark" onclick="setSide('dark')">🌑 深色遮罩</div>
+        </div>
+        <div class="pv"><canvas id="cv" width="1920" height="720"></canvas></div>
+        <div class="cols">
+          <div class="col">
+            <h4>左侧遮挡</h4>
+            <div class="prow"><label>左缘起点</label><input type="range" id="edgeL" min="0" max="200" value="125" oninput="onSlide()"><span class="val" id="v_edgeL"></span></div>
+            <div class="prow"><label>底边终点</label><input type="range" id="bottomL" min="2" max="80" value="15" oninput="onSlide()"><span class="val" id="v_bottomL"></span></div>
+            <div class="prow"><label>左弧度</label><input type="range" id="curveL" min="-100" max="300" value="30" oninput="onSlide()"><span class="val" id="v_curveL"></span></div>
+            <div class="prow"><label>左羽化</label><input type="range" id="featherL" min="0" max="150" value="150" oninput="onSlide()"><span class="val" id="v_featherL"></span></div>
+          </div>
+          <div class="col">
+            <h4>右侧遮挡</h4>
+            <div class="prow"><label>右缘起点</label><input type="range" id="edgeR" min="0" max="200" value="125" oninput="onSlide()"><span class="val" id="v_edgeR"></span></div>
+            <div class="prow"><label>底边终点</label><input type="range" id="bottomR" min="2" max="80" value="15" oninput="onSlide()"><span class="val" id="v_bottomR"></span></div>
+            <div class="prow"><label>右弧度</label><input type="range" id="curveR" min="-100" max="300" value="30" oninput="onSlide()"><span class="val" id="v_curveR"></span></div>
+            <div class="prow"><label>右羽化</label><input type="range" id="featherR" min="0" max="150" value="150" oninput="onSlide()"><span class="val" id="v_featherR"></span></div>
+          </div>
+        </div>
+        <div class="prow" style="margin-top:6px;"><label style="width:66px;">遮挡浓度</label><input type="range" id="alpha" min="10" max="200" value="135" oninput="onSlide()"><span class="val" id="v_alpha"></span></div>
+        <div class="cmBtns">
+          <div class="mbtn" id="btnReset" onclick="resetDefaults()">恢复默认（浅色）</div>
+          <div class="mbtn primary" onclick="cmApply()">应用部署</div>
+        </div>
+      </div>
+
+      <!-- 日志 -->
+      <div class="sect">日志</div>
+      <div class="log" id="logView">[12:00:01] App 启动，连接车机中…
+[12:00:02] SSH 通道建立 ●</div>
+
+    </div>
+  </div>
+
+  <div class="note">
+    <b>可交互预览</b>:以上即 App 主界面实际布局与交互 —— 卡片开关点击后暂存、点「应用更改」生效;遮罩选项描述行可点=选中;选中「🎨 自定义遮挡」展开参数面板,滑杆拖动实时渲染遮罩效果;右上 🌗 可切换深浅主题。<br>
+    <b>预览区背景</b>:预览画布叠加在原车壁纸上演示遮罩形态;App 内预览背景=你当前设置的壁纸,所见即上机真实效果。
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ===== 主题循环演示（App=深→浅→跟随系统；设计稿=深⇄浅） ===== */
+let themeDark = true;
+function toggleTheme(){
+  themeDark = !themeDark;
+  document.body.classList.toggle('light', !themeDark);
+  toast(themeDark ? '深色主题' : '浅色主题');
+}
+
+/* ===== 连接状态演示 ===== */
+setTimeout(()=>{ const c=$('conn'); c.textContent='● 已连接'; c.classList.add('ok'); log('车机连接成功（SSH 通道就绪）','l-ok'); }, 1200);
+
+/* ===== 双开关：暂存模式（与 App 一致：点开关只暂存，应用更改才部署） ===== */
+let musicOn=false, naviOn=false, appliedMusic=false, appliedNavi=false;
+function tgMusic(){
+  musicOn=!musicOn;
+  $('swMusic').classList.toggle('on', musicOn);
+  $('stMusic').textContent='待应用（' + (musicOn?'隐藏':'显示') + '）';
+  toast('已暂存，点上方「应用更改」生效');
+  log('音乐卡片开关暂存：' + (musicOn?'隐藏':'显示'));
+}
+function tgNavi(){
+  naviOn=!naviOn;
+  $('swNavi').classList.toggle('on', naviOn);
+  $('stNavi').textContent='待应用（' + (naviOn?'隐藏':'显示') + '）';
+  toast('已暂存，点上方「应用更改」生效');
+  log('导航卡片开关暂存：' + (naviOn?'隐藏':'显示'));
+}
+/* 应用更改：统一部署+重启（演示：状态带落定+日志） */
+function applyChanges(){
+  appliedMusic=musicOn; appliedNavi=naviOn;
+  $('stMusic').textContent = appliedMusic?'已隐藏':'显示中';
+  $('stNavi').textContent = appliedNavi?'已隐藏':'显示中';
+  toast('部署完成，仪表重启中…');
+  log('部署 rightmenu（音乐' + (musicOn?'隐藏':'显示') + ' × 导航' + (naviOn?'隐藏':'显示') + '）…','l-ok');
+  log('resource 补丁部署完成，重启仪表 cluster-hmi','l-ok');
+}
+/* 恢复原车：全部还原 */
+function restoreAll(){
+  musicOn=naviOn=false; appliedMusic=appliedNavi=false;
+  $('swMusic').classList.remove('on'); $('swNavi').classList.remove('on');
+  $('stMusic').textContent='显示中'; $('stNavi').textContent='显示中';
+  $('stMask').textContent='原车遮罩';
+  selMask(0);
+  toast('已恢复原车');
+  log('恢复原车：background/rightmenu/resource 全部还原','l-warn');
+}
+
+/* ===== 遮罩选项（单选+描述行可点；自定义展开参数面板） ===== */
+const MASK_NAMES=['原车遮罩','半遮挡','透明','自定义遮挡'];
+function selMask(i){
+  for(let k=0;k<4;k++){ const o=$('opt'+k); o.classList.toggle('sel', k===i); }
+  $('customPanel').style.display = i===3 ? 'block' : 'none';
+  $('stMask').textContent = MASK_NAMES[i];
+}
+
+/* ===== 自定义遮挡参数（默认=v27 定稿实测值，与 App prefs 默认一致） ===== */
+const KEYS=['edgeL','bottomL','curveL','featherL','edgeR','bottomR','curveR','featherR','alpha'];
+const DEF={
+  dark:  {edgeL:80, bottomL:30, curveL:140, featherL:110, edgeR:80, bottomR:30, curveR:140, featherR:112, alpha:100},
+  light: {edgeL:100, bottomL:40, curveL:140, featherL:120, edgeR:100, bottomR:40, curveR:140, featherR:120, alpha:135},
+};
+const params={dark:{...DEF.dark}, light:{...DEF.light}};
+let cur='light';
+
+/* ===== tuner3 同款算法实时渲染（低清演示=全清；App 端松手 400ms 防抖精算） ===== */
+const W=1920, H=720;
+const RGB_LIGHT=[215,229,250], RGB_DARK=[0,0,0];
+const DIAG=Math.sqrt(960*960+360*360);
+const DENS_FULL=0.35, DENS_MIN=0.52, DENS_LO=0.15;
+const densField=new Float32Array(W*H);
+for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+  const DL=Math.sqrt(x*x+(y-H)*(y-H)), DR=Math.sqrt((x-W)*(x-W)+(y-H)*(y-H));
+  const d=Math.min(DL,DR)/DIAG;
+  densField[y*W+x]=d<=DENS_FULL?1.0:d>=DENS_MIN?DENS_LO:1.0-(d-DENS_FULL)/(DENS_MIN-DENS_FULL)*(1.0-DENS_LO);
+}
+function $(id){ return document.getElementById(id); }
+function edgePoint(side,pct){
+  if(pct<=100){ const y=H*(1-pct/100); return side==='R'?{x:W,y}:{x:0,y}; }
+  const x=(pct-100)/100*H; return side==='R'?{x:W-x,y:0}:{x,y:0};
+}
+function bezierPts(P1,P2,corner,pct,steps){
+  const mx=(P1.x+P2.x)/2, my=(P1.y+P2.y)/2, vx=corner.x-mx, vy=corner.y-my, Lc=Math.hypot(vx,vy);
+  const off=Lc*pct/100, cx=mx+vx/Lc*off, cy=my+vy/Lc*off, pts=[];
+  for(let i=0;i<=steps;i++){ const t=i/steps; pts.push({x:(1-t)*(1-t)*P1.x+2*(1-t)*t*cx+t*t*P2.x, y:(1-t)*(1-t)*P1.y+2*(1-t)*t*cy+t*t*P2.y}); }
+  return pts;
+}
+function rasterize(pts,corners){
+  const mask=new Float32Array(W*H);
+  for(let y=0;y<H;y++){
+    const yc=y+0.5, xs=[]; const poly=pts.concat(corners);
+    for(let i=0;i<poly.length;i++){
+      const a=poly[i], b=poly[(i+1)%poly.length];
+      if((a.y<=yc&&b.y>yc)||(b.y<=yc&&a.y>yc)) xs.push(a.x+(yc-a.y)/(b.y-a.y)*(b.x-a.x));
+    }
+    xs.sort((p,q)=>p-q);
+    for(let i=0;i+1<xs.length;i+=2){
+      const x0=Math.max(0,Math.ceil(xs[i]-0.5)), x1=Math.min(W-1,Math.floor(xs[i+1]-0.5));
+      for(let x=x0;x<=x1;x++) mask[y*W+x]=1;
+    }
+  }
+  return mask;
+}
+function boxBlur(src,r){
+  const tmp=new Float32Array(src.length), out=new Float32Array(src.length);
+  for(let y=0;y<H;y++){ let acc=0; const row=y*W;
+    for(let x=-r;x<=r;x++) acc+=src[row+Math.min(W-1,Math.max(0,x))];
+    for(let x=0;x<W;x++){ tmp[row+x]=acc/(2*r+1);
+      acc+=src[row+Math.min(W-1,x+r+1)]-src[row+Math.max(0,x-r)]; } }
+  for(let x=0;x<W;x++){ let acc=0;
+    for(let y=-r;y<=r;y++) acc+=tmp[Math.min(H-1,Math.max(0,y))*W+x];
+    for(let y=0;y<H;y++){ out[y*W+x]=acc/(2*r+1);
+      acc+=tmp[Math.min(H-1,y+r+1)*W+x]-tmp[Math.max(0,y-r)*W+x]; } }
+  return out;
+}
+const wallLight=new Image(); wallLight.src='png06_light_wall.png';
+const wallDark=new Image(); wallDark.src='png00_dark_wall.png';
+let wallReady=false;
+wallLight.onload=wallDark.onload=()=>{ wallReady=true; doDraw(); };
+function doDraw(){
+  const P=params[cur];
+  KEYS.forEach(k=>{ $('v_'+k).textContent=P[k]+(k==='featherL'||k==='featherR'?'px':'%'); });
+  const AR=edgePoint('R',P.edgeR), BR={x:W*(1-P.bottomR/100),y:H};
+  const AL=edgePoint('L',P.edgeL), BL={x:W*P.bottomL/100,y:H};
+  const ptsR=bezierPts(AR,BR,{x:W,y:H},P.curveR,24);
+  const ptsL=bezierPts(AL,BL,{x:0,y:H},P.curveL,24);
+  let mR=rasterize(ptsR,[{x:W+300,y:H+300},{x:W+300,y:AR.y-300},{x:W-1,y:AR.y-300}]);
+  let mL=rasterize(ptsL,[{x:BL.x,y:H+300},{x:-300,y:H+300},{x:-300,y:AL.y-300},{x:0,y:AL.y-300}]);
+  const fr=Math.max(1,Math.round(P.featherR/2)), fl=Math.max(1,Math.round(P.featherL/2));
+  for(let i=0;i<3;i++){ mR=boxBlur(mR,fr); mL=boxBlur(mL,fl); }
+  const cv=$('cv'), ctx=cv.getContext('2d');
+  const img=ctx.createImageData(W,H), d=img.data, amax=P.alpha/100;
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    const p=y*W+x, k=Math.max(mR[p],mL[p]), a=k*densField[p]*amax;
+    const rgb=cur==='dark'?RGB_DARK:RGB_LIGHT;
+    d[p*4]=rgb[0]; d[p*4+1]=rgb[1]; d[p*4+2]=rgb[2]; d[p*4+3]=a*255;
+  }
+  ctx.clearRect(0,0,W,H);
+  const wall=cur==='dark'?wallDark:wallLight;
+  if(wallReady&&wall.complete&&wall.naturalWidth>0){ ctx.drawImage(wall,0,0,W,H); }
+  else{
+    const g=ctx.createLinearGradient(0,0,0,H);
+    if(cur==='dark'){ g.addColorStop(0,'#16283c'); g.addColorStop(1,'#0a1622'); }
+    else{ g.addColorStop(0,'#dfeef7'); g.addColorStop(1,'#6a9cc0'); }
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  }
+  const tmp=document.createElement('canvas'); tmp.width=W; tmp.height=H;
+  tmp.getContext('2d').putImageData(img,0,0);
+  ctx.drawImage(tmp,0,0);
+}
+let drawTimer=null;
+function onSlide(){
+  const p=params[cur];
+  KEYS.forEach(k=>{ p[k]=+$(k).value; });
+  clearTimeout(drawTimer); drawTimer=setTimeout(doDraw,16);
+}
+function setSide(side){
+  cur=side;
+  $('cmDark').className='sidebtn'+(side==='dark'?' sel':'');
+  $('cmLight').className='sidebtn'+(side==='light'?' sel':'');
+  $('btnReset').textContent='恢复默认（'+(side==='dark'?'深色':'浅色')+'）';
+  KEYS.forEach(k=>{ $(k).value=params[side][k]; });
+  doDraw();
+}
+function resetDefaults(){
+  KEYS.forEach(k=>{ params[cur][k]=DEF[cur][k]; $(k).value=DEF[cur][k]; });
+  doDraw();
+  toast('已恢复默认（'+(cur==='dark'?'深色':'浅色')+'）');
+  log('自定义遮挡默认值恢复：'+(cur==='dark'?'深色':'浅色'));
+}
+function cmApply(){
+  toast('部署自定义遮挡…');
+  log('生成遮罩（'+(cur==='dark'?'深':'浅')+'）→KzbRepacker 替换→部署+自动切 5 号','l-ok');
+}
+
+/* ===== 槽卡/即时切换演示 ===== */
+function setSlotDemo(){
+  $('slotD').textContent='已设置'; $('slotL').textContent='已设置';
+  $('slotInfo').textContent='已选 深 浅（原图直出·无损）';
+}
+setTimeout(setSlotDemo, 1800);
+for(let i=1;i<=6;i++){
+  $('qbtn'+i) /* 占位：快速按钮直接绑定 */;
+}
+document.querySelectorAll('.qbtn').forEach((b,idx)=>{
+  b.onclick=()=>{
+    const n=idx+1;
+    $('stWp').textContent = n===5 ? '5 · 自定义' : n+' · 原车';
+    $('wpState').textContent='当前壁纸编号：'+n+'（'+(n===5?'5 · 自定义':n+' · 原车')+'）';
+    toast('已切换到 '+n+' 号壁纸');
+    log('CarProperty 属性切换壁纸 → BG'+n+'（毫秒生效）');
+  };
+});
+
+/* ===== Toast + 日志 ===== */
+let toastTimer=null;
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function log(msg,cls){
+  const el=$('logView');
+  const t=new Date(); const ts=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')+':'+String(t.getSeconds()).padStart(2,'0');
+  el.appendChild(document.createTextNode('\n['+ts+'] '+msg));
+  if(cls){ /* 简化：演示不分行着色 */ }
+}
+
+window.addEventListener('load',()=>{ setSide('light'); selMask(0); });
+</script>
+</body>
+</html>

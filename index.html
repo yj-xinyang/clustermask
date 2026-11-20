@@ -73,6 +73,10 @@
   /* UI 预览 */
   .preview { margin-top: 36px; }
   .preview img { width: 100%; border-radius: 18px; border: 1px solid #202c3e; box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+  .preview iframe {
+    width: 100%; height: 1250px; border: 1px solid #202c3e; border-radius: 18px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5); background: #0b0e14; display: block;
+  }
   .preview .cap { text-align: center; font-size: 12.5px; color: #5c7a94; margin-top: 12px; }
 
   /* 安全机制 */
@@ -123,7 +127,7 @@
   <div class="hero">
     <img class="icon" src="assets/app-icon.png" alt="app icon">
     <h1>24-25星越L自定义仪表</h1>
-    <div class="sub">壁纸自定义 · 遮罩样式调整 · 卡片管理 —— 你的仪表，你做主</div>
+    <div class="sub">壁纸自定义 · 遮罩形态自由调 · 卡片自由管理 —— 你的仪表，你做主</div>
     <div class="badge">✓ 适用于 24-25 款星越L</div>
     <div class="cta">
       <a class="btn btn-ghost" href="sponsor.html">赞助方式</a>
@@ -140,13 +144,13 @@
     <div class="features">
       <div class="feature">
         <div class="fi" style="background:rgba(70,160,200,0.15)">🌗</div>
-        <div class="t">仪表遮罩三态</div>
-        <div class="d">原车遮罩 / 半遮挡 / 透明遮罩自由切换。半遮挡模式只遮挡角落区域，中央透出壁纸，并可消除挡位色块。</div>
+        <div class="t">仪表遮罩四态</div>
+        <div class="d">原车 / 半遮挡 / 透明 / 自定义遮挡自由切换。自定义遮挡提供 18 项独立参数（左右边缘、弧度、羽化、浓度），滑杆实时预览，深浅色模式各自记忆。</div>
       </div>
       <div class="feature">
-        <div class="fi" style="background:rgba(232,184,74,0.15)">🧭</div>
-        <div class="t">导航卡片隐藏</div>
-        <div class="d">一键隐藏仪表导航卡片，投屏导航时视野最大化。音乐卡片、HUD、音量、告警均不受影响。</div>
+        <div class="fi" style="background:rgba(232,184,74,0.15)">🎛</div>
+        <div class="t">卡片自由管理</div>
+        <div class="d">音乐卡片、导航卡片可分别独立隐藏，互不影响。隐藏后投屏导航视野最大化、空闲仪表更纯净；音乐播放、HUD、音量、告警均不受影响。</div>
       </div>
       <div class="feature">
         <div class="fi" style="background:rgba(120,190,160,0.15)">🖼</div>
@@ -165,8 +169,8 @@
       </div>
       <div class="feature">
         <div class="fi" style="background:rgba(90,160,210,0.15)">✓</div>
-        <div class="t">车型智能验证</div>
-        <div class="d">自动识别车机型号，仅 24-25 款星越L 车机可用，防止误装误用。</div>
+        <div class="t">激活码永久有效</div>
+        <div class="d">激活码与车架号绑定，一台车一枚：卸载重装、升级换版输同一个激活码即可，无需重新获取。车型智能校验，仅 24-25 款星越L 可用。</div>
       </div>
     </div>
   </section>
@@ -176,8 +180,8 @@
     <div class="sec-sub">深色 / 浅色双主题 · 三种主题模式自由切换（深色 / 浅色 / 跟随系统）</div>
     <div class="divider"></div>
     <div class="preview">
-      <img src="assets/ui-preview.png" alt="App 界面预览">
-      <div class="cap">主界面：悬浮操作栏 · 状态一览卡 · 卡片式设置分区</div>
+      <iframe src="assets/ui-preview.html" title="App 界面预览" loading="lazy"></iframe>
+      <div class="cap">主界面可交互预览：双卡片开关 / 遮罩选项 / 自定义遮挡 18 参数实时渲染 —— 均可点击体验</div>
     </div>
   </section>
 
