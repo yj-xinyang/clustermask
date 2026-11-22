@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>24-25星越L自定义仪表 · 界面预览</title>
+<title>24-25星越L自定义仪表 · UI 设计稿（与 App 实际 UI 1:1 同步 2026-11-20）</title>
 <style>
   :root{
     /* ===== 深色主题（=App AppThemeDark，themes.xml 实值） ===== */
@@ -34,12 +34,12 @@
   .top { background:var(--bgTop); padding:14px 14px 12px; border-bottom:1px solid var(--line); }
   .toprow { display:flex; align-items:center; }
   .appicon { width:36px; height:36px; border-radius:9px; background:linear-gradient(135deg,var(--appIconA),var(--appIconB)); display:flex; align-items:center; justify-content:center; font-size:24px; margin-right:10px; }
-  .titles { flex:1; }
+  .titles { display:flex; align-items:center; }
   .title { font-size:20px; font-weight:bold; color:var(--tx); letter-spacing:.03em; }
-  .subtitle { font-size:16px; color:var(--tx2); margin-top:2px; }
-  .themeBtn { width:30px; height:30px; border-radius:8px; background:var(--panel2); border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; margin-right:8px; }
+  .themeBtn { width:30px; height:30px; border-radius:8px; background:var(--panel2); border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; margin-left:16px; margin-right:8px; }
   .conn { font-size:16px; padding:4px 9px; border-radius:6px; background:var(--panel2); color:var(--accent); }
   .conn.ok { color:var(--ok); }
+  .spacer { flex:1; }
   .mainBtns { display:flex; gap:6px; margin-top:12px; }
   .mbtn { flex:1; padding:11px 0; border-radius:8px; font-size:18px; font-weight:bold; text-align:center; cursor:pointer; border:1px solid var(--line2); background:var(--panel); color:var(--tx2); }
   .mbtn.primary { background:linear-gradient(180deg,var(--btnPrimaryA),var(--btnPrimaryB)); border-color:var(--btnPrimaryB); color:#fff; }
@@ -74,9 +74,10 @@
   .slotBtns { display:flex; gap:8px; margin-top:8px; }
   .slotBtns .sbtn { flex:1; text-align:center; padding:8px 0; }
 
-  /* 壁纸即时切换 */
+  /* 壁纸槽位切换（自定义壁纸组件内） */
   .quick { display:flex; gap:4px; }
   .qbtn { flex:1; padding:9px 0; border-radius:6px; font-size:18px; text-align:center; border:1px solid var(--line2); background:var(--panel2); color:var(--tx2); cursor:pointer; margin:4px; }
+  .qbtn.sel { background:linear-gradient(180deg,var(--btnPrimaryA),var(--btnPrimaryB)); border-color:var(--btnPrimaryB); color:#fff; font-weight:bold; }
   .wpstate { font-size:16px; color:var(--tx2); margin-top:9px; }
 
   /* 仪表卡片双开关（Android Switch 风格） */
@@ -132,16 +133,17 @@
 <div class="phone">
   <div class="app" id="app">
 
-    <!-- ===== 悬浮顶区：图标+标题+主题+连接状态，下方应用/恢复双按钮（滚动时固定） ===== -->
+    <!-- ===== 悬浮顶区：图标+标题（右侧紧跟连接状态，最右深浅色切换+检查更新），下方应用/恢复双按钮（滚动时固定） ===== -->
     <div class="top">
       <div class="toprow">
         <div class="appicon">🛠</div>
         <div class="titles">
           <div class="title">24-25星越L自定义仪表</div>
-          <div class="subtitle">适用 24-25 款星越L</div>
         </div>
-        <div class="themeBtn" onclick="toggleTheme()" title="深色→浅色→跟随系统循环">🌗</div>
         <div class="conn" id="conn">● 连接中</div>
+        <div class="spacer"></div>
+        <div class="themeBtn" onclick="toggleTheme()" title="深色→浅色→跟随系统循环">🌗</div>
+        <span class="sbtn" onclick="checkUpdate()">检查更新</span>
       </div>
       <div class="mainBtns">
         <div class="mbtn primary" onclick="applyChanges()">应用更改</div>
@@ -156,42 +158,38 @@
         <div class="scard"><div class="k">遮罩状态</div><div class="v" id="stMask">原车遮罩</div></div>
         <div class="scard"><div class="k">音乐卡片</div><div class="v acc" id="stMusic">显示中</div></div>
         <div class="scard"><div class="k">导航卡片</div><div class="v acc" id="stNavi">显示中</div></div>
-        <div class="scard"><div class="k">壁纸编号</div><div class="v tx" id="stWp">5 · 自定义</div></div>
+        <div class="scard"><div class="k">壁纸编号</div><div class="v tx" id="stWp">5</div></div>
       </div>
 
-      <!-- 自定义壁纸（5 号槽 · 深浅独立）：双槽卡 + 三按钮 -->
-      <div class="sect">自定义壁纸（5 号槽 · 深浅独立）</div>
+      <!-- 自定义壁纸 · 即时切换（1~6 号槽 · 原图直出 · 深浅独立）：预览框跟随当前槽位 -->
+      <div class="sect" style="display:flex;align-items:center;justify-content:space-between">
+        <span>自定义壁纸 · 即时切换（1~6 号槽 · 原图直出 · 深浅独立）</span>
+        <span class="sbtn" onclick="rstAll()">全部恢复原车壁纸</span>
+      </div>
       <div class="panel">
         <div class="slots">
           <div class="slot">
-            <img class="thumb" src="png00_dark_wall.png" alt="深色壁纸槽">
-            <div class="lab">🌙 深色壁纸</div>
-            <div class="st" id="slotD">未设置</div>
-            <span class="sbtn hl">选图</span>
+            <img class="thumb" id="imgL" src="bg5_light.png" alt="浅色壁纸槽">
+            <div class="lab">☀️ 浅色壁纸</div>
+            <div class="slotBtns">
+              <span class="sbtn hl" onclick="pickSlot(false)">选择壁纸</span>
+              <span class="sbtn" onclick="clrSlot(false)">清除壁纸</span>
+            </div>
           </div>
           <div class="slot">
-            <img class="thumb" src="png06_light_wall.png" alt="浅色壁纸槽">
-            <div class="lab">☀️ 浅色壁纸</div>
-            <div class="st" id="slotL">未设置</div>
-            <span class="sbtn hl">选图</span>
+            <img class="thumb" id="imgD" src="bg5_dark.png" alt="深色壁纸槽">
+            <div class="lab">🌙 深色壁纸</div>
+            <div class="slotBtns">
+              <span class="sbtn hl" onclick="pickSlot(true)">选择壁纸</span>
+              <span class="sbtn" onclick="clrSlot(true)">清除壁纸</span>
+            </div>
           </div>
         </div>
-        <div class="slotInfo" id="slotInfo"> · 未选图</div>
-        <div class="slotBtns">
-          <span class="sbtn hl">相册选图</span>
-          <span class="sbtn">清除深色</span>
-          <span class="sbtn">清除浅色</span>
-        </div>
-      </div>
-
-      <!-- 壁纸即时切换 -->
-      <div class="sect">壁纸即时切换（毫秒生效 · 免重启）</div>
-      <div class="panel">
-        <div class="quick">
+        <div class="quick" style="margin-top:11px">
           <div class="qbtn">1</div><div class="qbtn">2</div><div class="qbtn">3</div>
-          <div class="qbtn">4</div><div class="qbtn">5</div><div class="qbtn">6</div>
+          <div class="qbtn">4</div><div class="qbtn sel">5</div><div class="qbtn">6</div>
         </div>
-        <div class="wpstate" id="wpState">当前壁纸编号：5（5 · 自定义）</div>
+        <div class="slotInfo">💡 点 1~6 切换槽位（毫秒生效 · 免重启），预览框实时显示该槽当前壁纸</div>
       </div>
 
       <!-- 仪表卡片：双开关（音乐在上，导航在下；均可独立设置，默认关） -->
@@ -273,8 +271,8 @@
   </div>
 
   <div class="note">
-    <b>可交互预览</b>:以上即 App 主界面实际布局与交互 —— 卡片开关点击后暂存、点「应用更改」生效;遮罩选项描述行可点=选中;选中「🎨 自定义遮挡」展开参数面板,滑杆拖动实时渲染遮罩效果;右上 🌗 可切换深浅主题。<br>
-    <b>预览区背景</b>:预览画布叠加在原车壁纸上演示遮罩形态;App 内预览背景=你当前设置的壁纸,所见即上机真实效果。
+    <b>同步说明（2026-11-22）</b>:本设计稿已与 App 实际布局 1:1 对齐（activity_main.xml 实测定稿）——顶区悬浮(图标/标题（紧跟主题按钮·连接状态，最右检查更新）/应用·恢复双按钮) → 状态带四卡 → 自定义壁纸·即时切换(深浅双卡·卡内选择壁纸/清除壁纸(=恢复原车)+标题行全部恢复原车+1~6 槽位按钮 · 预览跟随槽位) → 仪表卡片双开关 → 仪表遮罩四选项(默认原车) → 自定义参数(选中展开) → 日志。色板 = themes.xml 深浅两套实值;字号按 1sp=0.72px 等比(车机密度渲染会更大)。<br>
+    <b>交互与 App 一致</b>:卡片开关=暂存(点「应用更改」才生效);遮罩选项描述行可点=选中;自定义遮挡选中才展开参数;深浅两套参数独立,「恢复默认」只重置当前侧;滑杆低清实时预览,松手 400ms 防抖后台精算 1920×720。
   </div>
 </div>
 
@@ -291,6 +289,16 @@ function toggleTheme(){
 
 /* ===== 连接状态演示 ===== */
 setTimeout(()=>{ const c=$('conn'); c.textContent='● 已连接'; c.classList.add('ok'); log('车机连接成功（SSH 通道就绪）','l-ok'); }, 1200);
+
+/* ===== 在线升级演示（App 端：GET gitee raw update.json → 比对 versionCode → 下载+sha256 校验 → 调系统安装） ===== */
+function checkUpdate(){
+  toast('正在检查更新…');
+  log('检查更新：GET gitee.com/yj-xinyang/clustermask update.json');
+  setTimeout(()=>{
+    toast('已是最新版本 v7.13');
+    log('服务端 versionCode=28，本地 28 → 已是最新');
+  }, 900);
+}
 
 /* ===== 双开关：暂存模式（与 App 一致：点开关只暂存，应用更改才部署） ===== */
 let musicOn=false, naviOn=false, appliedMusic=false, appliedNavi=false;
@@ -395,10 +403,26 @@ function boxBlur(src,r){
       acc+=tmp[Math.min(H-1,y+r+1)*W+x]-tmp[Math.max(0,y-r)*W+x]; } }
   return out;
 }
-const wallLight=new Image(); wallLight.src='png06_light_wall.png';
-const wallDark=new Image(); wallDark.src='png00_dark_wall.png';
-let wallReady=false;
-wallLight.onload=wallDark.onload=()=>{ wallReady=true; doDraw(); };
+/* ===== 壁纸槽位模型:1~6 槽,每槽[深,浅]两态(null=未选图→应用后=原车壁纸 / 'custom'=已选图)
+   清除壁纸=恢复原车壁纸(应用时该槽不替换,自然回到原车图);演示初始:全部未选图 ===== */
+const slotCustom={1:[null,null],2:[null,null],3:[null,null],4:[null,null],5:[null,null],6:[null,null]};
+let curSlot=5;
+/* 已选图占位(仅演示:实际 App 此处显示用户所选图片) */
+const PH_D='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="720"><rect width="1920" height="720" fill="rgb(20,32,58)"/><text x="960" y="392" font-size="110" fill="rgb(140,168,200)" text-anchor="middle" font-family="sans-serif">已选图（深色 · 示例）</text></svg>');
+const PH_L='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="720"><rect width="1920" height="720" fill="rgb(226,238,248)"/><text x="960" y="392" font-size="110" fill="rgb(110,140,175)" text-anchor="middle" font-family="sans-serif">已选图（浅色 · 示例）</text></svg>');
+const IMGS={};
+function slotSrc(n,dark){
+  return slotCustom[n][dark?0:1]==='custom'
+    ? (dark?PH_D:PH_L)
+    : ('bg'+n+(dark?'_dark':'_light')+'.png');
+}
+function wallImage(dark){
+  const s=slotSrc(curSlot,dark);
+  if(!IMGS[s]){ const im=new Image(); im.src=s; IMGS[s]=im;
+    if(!im._bound){ im._bound=true; im.onload=()=>doDraw(); } }
+  const im=IMGS[s];
+  return (im.complete&&im.naturalWidth>0)?im:null;
+}
 function doDraw(){
   const P=params[cur];
   KEYS.forEach(k=>{ $('v_'+k).textContent=P[k]+(k==='featherL'||k==='featherR'?'px':'%'); });
@@ -418,8 +442,8 @@ function doDraw(){
     d[p*4]=rgb[0]; d[p*4+1]=rgb[1]; d[p*4+2]=rgb[2]; d[p*4+3]=a*255;
   }
   ctx.clearRect(0,0,W,H);
-  const wall=cur==='dark'?wallDark:wallLight;
-  if(wallReady&&wall.complete&&wall.naturalWidth>0){ ctx.drawImage(wall,0,0,W,H); }
+  const wall=wallImage(cur==='dark');
+  if(wall){ ctx.drawImage(wall,0,0,W,H); }
   else{
     const g=ctx.createLinearGradient(0,0,0,H);
     if(cur==='dark'){ g.addColorStop(0,'#16283c'); g.addColorStop(1,'#0a1622'); }
@@ -455,22 +479,36 @@ function cmApply(){
   log('生成遮罩（'+(cur==='dark'?'深':'浅')+'）→KzbRepacker 替换→部署+自动切 5 号','l-ok');
 }
 
-/* ===== 槽卡/即时切换演示 ===== */
-function setSlotDemo(){
-  $('slotD').textContent='已设置'; $('slotL').textContent='已设置';
-  $('slotInfo').textContent='已选 深 浅（原图直出·无损）';
+/* ===== 全 6 槽演示：选槽（1~6）→ 双槽预览框跟随显示该槽当前壁纸 ===== */
+function refreshSlotPanel(){
+  $('imgL').src=slotSrc(curSlot,false);
+  $('imgD').src=slotSrc(curSlot,true);
 }
-setTimeout(setSlotDemo, 1800);
-for(let i=1;i<=6;i++){
-  $('qbtn'+i) /* 占位：快速按钮直接绑定 */;
+function pickSlot(dark){
+  slotCustom[curSlot][dark?0:1]='custom'; refreshSlotPanel();
+  toast(curSlot+' 号槽'+(dark?'深色':'浅色')+'已选图（原图直出·暂存）');
+  log('为 '+curSlot+' 号槽'+(dark?'深':'浅')+'侧选图 → 点「应用更改」重排部署','l-ok');
+}
+function clrSlot(dark){
+  slotCustom[curSlot][dark?0:1]=null; refreshSlotPanel();
+  toast('已清除 '+curSlot+' 号槽'+(dark?'深色':'浅色')+'壁纸（恢复原车）');
+  log('清除 '+curSlot+' 号槽'+(dark?'深':'浅')+'侧 → 应用后该侧恢复原车图');
+}
+function rstAll(){
+  for(let n=1;n<=6;n++) slotCustom[n]=[null,null];
+  refreshSlotPanel();
+  toast('已暂存：全部槽位将恢复原车壁纸，点「应用更改」生效');
+  log('全部槽位（1~6 深浅共 12 侧）已暂存恢复原车 → 点「应用更改」后部署生效');
 }
 document.querySelectorAll('.qbtn').forEach((b,idx)=>{
   b.onclick=()=>{
-    const n=idx+1;
-    $('stWp').textContent = n===5 ? '5 · 自定义' : n+' · 原车';
-    $('wpState').textContent='当前壁纸编号：'+n+'（'+(n===5?'5 · 自定义':n+' · 原车')+'）';
-    toast('已切换到 '+n+' 号壁纸');
-    log('CarProperty 属性切换壁纸 → BG'+n+'（毫秒生效）');
+    curSlot=idx+1;
+    document.querySelectorAll('.qbtn').forEach((x,i)=>x.classList.toggle('sel',i===curSlot-1));
+    $('stWp').textContent=curSlot;
+    refreshSlotPanel();
+    doDraw();
+    toast('已切换到 '+curSlot+' 号壁纸');
+    log('CarProperty 属性切换壁纸 → BG'+curSlot+'（毫秒生效）');
   };
 });
 
